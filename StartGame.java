@@ -11,6 +11,7 @@ public class StartGame {
     static class GamePanel {
         JLayeredPane pane;
 
+        protected JTextField textField;
         /** панель для базового слоя */
         JPanel baseLayer;
 
@@ -18,29 +19,86 @@ public class StartGame {
         Field field;
         /** панель с буквами для перетаскивания */
         JPanel letterBank;
-
+        //public String Vesa_chars[];
+   	 	public static String vesa_chars[]={"",
+   			"авеинорст"//1
+   			,"дклмпу"//2
+   			,"бгья"//3
+   			,"йы"//4
+   			,"жзхцч"//5
+   			,"",""
+   			,"фшэю"//8
+   			,""
+   			,"щ"//10
+   			,"","","",""
+   			,"ъ"};// 15
+   	 public static int cellcolor[][]=
+   		{{3,0,0,2,0,0,0,3,0,0,0,2,0,0,3}//   3 - word *3    4 - word *2
+   		,{0,4,0,0,0,1,0,0,0,1,0,0,0,4,0}//  2 - char *2    1 - char *3
+   		,{0,0,4,0,0,0,2,0,2,0,0,0,4,0,0}
+   		,{2,0,0,4,0,0,0,2,0,0,0,4,0,0,2}
+   		,{0,0,0,0,4,0,0,0,0,0,4,0,0,0,0}
+   		,{0,1,0,0,0,0,0,0,0,0,0,0,0,1,0}
+   		,{0,0,2,0,0,0,2,0,2,0,0,0,2,0,0}
+   		,{3,0,0,2,0,0,0,2,0,0,0,2,0,0,3}
+   		,{0,0,2,0,0,0,2,0,2,0,0,0,2,0,0}
+   		,{0,1,0,0,0,0,0,0,0,0,0,0,0,1,0}
+   		,{0,0,0,0,4,0,0,0,0,0,4,0,0,0,0}
+   		,{2,0,0,4,0,0,0,2,0,0,0,4,0,0,2}//  2 - char *2    1 - char *3
+   		,{0,0,4,0,0,0,2,0,2,0,0,0,4,0,0}//   3 - word *3    4 - word *2
+   		,{0,4,0,0,0,1,0,0,0,1,0,0,0,4,0}
+   		,{3,0,0,2,0,0,0,3,0,0,0,2,0,0,3}};
+   	public  String words7="шаблон*";//shablon
+   	public static String words[]={"",//array dictionary
+   			"абак"//1
+   			,"дерево"//2
+   			,"кот"//3
+   			,"мяч"//4
+   			,"бог"//5
+   			,"двор"//6
+   			,"ящик"//7
+   			,"съем"};// 8
         public GamePanel() {
             // создание и размещение компонентов
+        	
             field = createField();
             letterBank = createLetterBank();
 
             baseLayer = new JPanel( new GridBagLayout() ); 
-
+            
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.weightx = 1;
             gbc.fill = GridBagConstraints.NONE;
             gbc.anchor = GridBagConstraints.CENTER;
-
+                       
             baseLayer.add( field, gbc );
-
+            
             gbc.gridx = 1;
             gbc.weightx = 0;
             gbc.fill = GridBagConstraints.NONE;
             gbc.anchor = GridBagConstraints.NORTHWEST;
 
             baseLayer.add( letterBank, gbc );
+         // добавляем текстовое поле для 7 букв
+            textField = new JTextField(7);
+            //textField.set
+            JPanel result = new JPanel( new GridLayout( 0, 3 ) );
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            result.add(textField);
+            baseLayer.add( result, gbc );
+            
+          //добавляем кнопку
+            result = new JPanel( new GridLayout( 0, 3 ) );
+            JButton button = new JButton(">>>", new ImageIcon("1.gif"));
+            button.setMargin(new Insets(0, 10, 20, 30));
+            button.setBounds(0, 0, 80, 20);
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+            result.add(button);
+           baseLayer.add( button, gbc );
 
             pane = new JLayeredPane();
             // базовый слой размещается на глубине DEFAULT_LAYER
@@ -50,7 +108,39 @@ public class StartGame {
                     baseLayer.setSize( e.getComponent().getSize() );                    
                 }
             });
+            System.out.println( "cena: " + this.calc_cena_word(0,0,1,words[8]) );
         }
+            public int calc_cena_word (int x, int y, int v, String str)
+            {
+            	int flag_word_multiply=1,sum=0,cxy=0;
+            	for (int is=0;is<str.length();is++)
+            	{
+            		int cena_char=calc_cena_char (str.substring(is, is+1));
+            		cxy=cellcolor[x][y];
+            		if (cxy==2) sum+=cxy*cena_char;
+            		if ((cxy==0)||(cxy==4)||(cxy==3)) sum+=cena_char;
+            		if (cxy==1) sum+=3*cena_char;
+            		System.out.println( "sum: " + sum+" "+cena_char);
+            		if (cxy>2) flag_word_multiply=cxy;
+            		if (v>0)
+            			x+=1;
+            		else 
+            			y+=1;
+            	}
+            	return sum*flag_word_multiply;
+            }
+            public int calc_cena_char (String str)
+            {
+            	System.out.println( "char: " + str);
+        		
+            	int j=0;
+            	for ( int iv=0;iv<vesa_chars.length;iv++)
+            	{
+            		if (vesa_chars[iv].indexOf(str)>-1)
+            			j= iv;
+            	}
+            	return j;
+            }
 
         /**
          * Компонент, рисующий игровое поле
@@ -83,13 +173,11 @@ public class StartGame {
                         }
                     }
                 }
-int [][] cellcolor=new int [15][15];
-cellcolor[0][0]=cellcolor[1][1]=cellcolor[2][2]=cellcolor[3][3]=cellcolor[4][4]=1;
-cellcolor[14][14]=cellcolor[13][13]=cellcolor[12][12]=cellcolor[11][11]=cellcolor[10][10]=1;
-cellcolor[0][14]=cellcolor[1][13]=cellcolor[2][12]=cellcolor[3][11]=cellcolor[4][10]=1;
-cellcolor[14][0]=cellcolor[13][1]=cellcolor[12][2]=cellcolor[11][3]=cellcolor[10][4]=1;
+//int [][] cellcolor=new int [15][15];
+
 
                 // отрисовка линий сетки
+g.setColor(Color.LIGHT_GRAY);
                 for ( int row = 1; row < SIZE; row += 1 ) {
                     g.drawLine( 0, row * CELL_SIZE, getWidth(), row * CELL_SIZE );
                 }
@@ -100,10 +188,15 @@ cellcolor[14][0]=cellcolor[13][1]=cellcolor[12][2]=cellcolor[11][3]=cellcolor[10
                 for ( int row = 0; row < SIZE; row += 1 )
                 	for ( int col = 0; col < SIZE; col += 1 ) 
                 	{
-                		if (cellcolor[row][col]==1){                	
-                g.setColor(Color.RED);
+                		int i=GamePanel.cellcolor[row][col];
+                		if (i>=1){                	
+                if (i==3)g.setColor(Color.RED);
+                if (i==1)g.setColor(Color.YELLOW);
+                if (i==2)g.setColor(Color.GREEN);
+                if (i==4)g.setColor(Color.BLUE);
+                
                 g.drawRect(row * CELL_SIZE, col*CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                g.setColor(Color.black);
+                g.setColor(Color.GRAY);
                 		}
             }
             }
