@@ -1,3 +1,5 @@
+
+//080816
 package AllClass;
 
 import java.awt.*;
@@ -5,34 +7,36 @@ import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
-
+/*{ elsi hv=down i (net bukv snizu ili odna bukva i net bukv sboku) i bukva sverhu - podhodit
+{
+*/
 public class StartGame {
 
     static class GamePanel {
         JLayeredPane pane;
 
         protected JTextField textField;
-        /** ïàíåëü äëÿ áàçîâîãî ñëîÿ */
+        /** ГЇГ Г­ГҐГ«Гј Г¤Г«Гї ГЎГ Г§Г®ГўГ®ГЈГ® Г±Г«Г®Гї */
         JPanel baseLayer;
 
-        /** ïîëå */
+        /** ГЇГ®Г«ГҐ */
         Field field;
-        /** ïàíåëü ñ áóêâàìè äëÿ ïåðåòàñêèâàíèÿ */
+        /** ГЇГ Г­ГҐГ«Гј Г± ГЎГіГЄГўГ Г¬ГЁ Г¤Г«Гї ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ Г­ГЁГї */
         JPanel letterBank;
-        Vector[] vectors = new  Vector[999];
+        //Vector[] vectors = new  Vector[999];
         //public String Vesa_chars[];
    	 	public static String vesa_chars[]={"",
-   			"àâåèíîðñò"//1
-   			,"äêëìïó"//2
-   			,"áãüÿ"//3
-   			,"éû"//4
-   			,"æçõö÷"//5
+   			"Г ГўГҐГЁГ­Г®Г°Г±ГІ"//1
+   			,"Г¤ГЄГ«Г¬ГЇГі"//2
+   			,"ГЎГЈГјГї"//3
+   			,"Г©Г»"//4
+   			,"Г¦Г§ГµГ¶Г·"//5
    			,"",""
-   			,"ôøýþ"//8
+   			,"ГґГёГЅГѕ"//8
    			,""
-   			,"ù"//10
+   			,"Г№"//10
    			,"","","",""
-   			,"ú"};// 15
+   			,"Гє"};// 15
    	 public static int cellcolor[][]=
    		{{3,0,0,2,0,0,0,3,0,0,0,2,0,0,3}//   3 - word *3    4 - word *2
    		,{0,4,0,0,0,1,0,0,0,1,0,0,0,4,0}//  2 - char *2    1 - char *3
@@ -50,8 +54,8 @@ public class StartGame {
    		,{0,4,0,0,0,1,0,0,0,1,0,0,0,4,0}
    		,{3,0,0,2,0,0,0,3,0,0,0,2,0,0,3}};
    	public static String[][] cellchars=
-   		{{"","u","","","","","","","","","","","","",""},
-   		 {"","t","","","","","","","","","","","","",""},
+   		{{"","u","","","","","","","","","","","","",""},//x=0
+   		 {"","t","","","","","","","","","","","","",""},//x=1
    		 {"","r","","","","","","","","","","","","",""},
    		 {"","o","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
@@ -62,9 +66,9 @@ public class StartGame {
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
-   		 {"","","","","","","","","","","","","","",""},
-   		 {"","p","a","s","s","","","","","","","","","",""},
-   		 {"","","","","","","","","","","","","","",""}};
+   		 {"","u","","","","","","","","","","","","",""},
+   		 {"","p","a","s","s","","","","","","","","","",""},//x=13
+   		 {"","a","","","","","","","","","","","","",""}};//x=14
    	public  String words7="wosnyui";//shablon
    	public static String words[]={"",//array dictionary
    			"first"//1
@@ -76,7 +80,7 @@ public class StartGame {
    			,"summer"//7
    			,"winter"};// 8
         public GamePanel() {
-            // ñîçäàíèå è ðàçìåùåíèå êîìïîíåíòîâ
+            // Г±Г®Г§Г¤Г Г­ГЁГҐ ГЁ Г°Г Г§Г¬ГҐГ№ГҐГ­ГЁГҐ ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ®Гў
         	
             field = createField();
             letterBank = createLetterBank();
@@ -98,7 +102,7 @@ public class StartGame {
             gbc.anchor = GridBagConstraints.NORTHWEST;
 
             baseLayer.add( letterBank, gbc );
-         // äîáàâëÿåì òåêñòîâîå ïîëå äëÿ 7 áóêâ
+         // Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГІГҐГЄГ±ГІГ®ГўГ®ГҐ ГЇГ®Г«ГҐ Г¤Г«Гї 7 ГЎГіГЄГў
             textField = new JTextField(7);
             //textField.set
             JPanel result = new JPanel( new GridLayout( 0, 3 ) );
@@ -107,7 +111,7 @@ public class StartGame {
             result.add(textField);
             baseLayer.add( result, gbc );
             
-          //äîáàâëÿåì êíîïêó
+          //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЄГ­Г®ГЇГЄГі
             result = new JPanel( new GridLayout( 0, 3 ) );
             JButton button = new JButton(">>>", new ImageIcon("1.gif"));
             button.setMargin(new Insets(0, 10, 20, 30));
@@ -118,7 +122,7 @@ public class StartGame {
            baseLayer.add( button, gbc );
 
             pane = new JLayeredPane();
-            // áàçîâûé ñëîé ðàçìåùàåòñÿ íà ãëóáèíå DEFAULT_LAYER
+            // ГЎГ Г§Г®ГўГ»Г© Г±Г«Г®Г© Г°Г Г§Г¬ГҐГ№Г ГҐГІГ±Гї Г­Г  ГЈГ«ГіГЎГЁГ­ГҐ DEFAULT_LAYER
             pane.add( baseLayer, JLayeredPane.DEFAULT_LAYER );
             pane.addComponentListener( new ComponentAdapter() {
                 @Override public void componentResized(ComponentEvent e) {
@@ -126,7 +130,7 @@ public class StartGame {
                 }
             });
             //System.out.println( "index find word: " + search_word(0,6,5,"r","swinte") );
-            int k=is_place(1,1,-1,3);//
+            int k=is_place(13,0,-1,3);//
              System.out.println( "k="+k);
            search_vectors();
         }
@@ -136,15 +140,15 @@ public class StartGame {
         	int count=0;
         	for (int x=0;x<13;x++)
         		for (int y=0;y<13;y++)
-        			for (int hv=1;hv<=1;hv+=2)
-        				for (int longhv=3;longhv<9;longhv++)
+        			for (int hv=-1;hv<=-1;hv+=2)
+        				for (int longhv=3;longhv<=3;longhv++)
         		{
         			int tmp=is_place(x,y,hv,longhv);
         			if (tmp>=0) 
         			{
-        				System.out.println( "x,y="+x+" "+y);
-        				vectors[count++] = new Vector(x,y,hv,longhv,tmp);
-        				 System.out.println( "count="+count);
+        				System.out.println( "x,y="+x+" "+y+" "+longhv);
+        				//vectors[count++] = new Vector(x,y,hv,longhv,tmp);
+        				 System.out.println( "count="+count++);
         			}
         		}
         	return 1;
@@ -191,39 +195,43 @@ public class StartGame {
         //proverka vectora na prigodnost for word
         {
         	int xx=x; int yy=y;
-        	int yes=1;//íå ïîäõîäèò
+        	int yes=1;//Г­ГҐ ГЇГ®Г¤ГµГ®Г¤ГЁГІ
         	int index=is_line(xx,yy,hv,hvlong);
         	//System.out.println( "is_line="+index);
-        	if (index==-1) return -1;
+        	if (index<0) return -1;
         	else
         	{
         		//System.out.println( "x,y="+x+" "+y);
         		if ((hv>0)&&(y<14)) //check down line
         			{
-        			yy=y+1; 
-        			if (index!=is_line(xx,yy,hv,hvlong)) return -1;
+        			//yy=y+1; 
+        			int tmp=is_line(xx,y+1,hv,hvlong);
+        			if ((index!=tmp)||(tmp==-1)) return -1;//return -1;
         			}
 
         		if ((hv>0)&&(y>=1)) //check up line
         			{
-        			yy=y-1; 
-        			if (index!=is_line(xx,yy,hv,hvlong)) return -1;
+        			//yy=y-1; 
+        			int tmp=is_line(xx,y-1,hv,hvlong);
+        			if ((index!=tmp)||(tmp==-1)) return -1;// return -1;
         			}
         		if ((hv<0)&&(x>=1)) //check left line
         			{
-        			xx=x-1; 
-        			if (index!=is_line(xx,yy,hv,hvlong)) return -1;
+        			//xx=x-1; 
+        			int tmp=is_line(x-1,yy,hv,hvlong);
+        			if ((index!=tmp)||(tmp==-1)) return -1; //return -1;
         			}
         		if ((hv<0)&&(x<14)) //check right line
         			{
-        			xx=x+1; 
-        			if (index!=is_line(xx,yy,hv,hvlong)) return -1;
+        			//xx=x+1; 
+        			int tmp=is_line(x+1,yy,hv,hvlong);
+        			if ((index!=tmp)||(tmp==-1)) return -1;
     			}
         	}
-        	if (x>0) if (cellchars[x-1][y]!="") yes=-1;
-        	if ((x+hvlong)<15) if (cellchars[x+1][y]!="") yes=-1;
-        	if (y>0) if (cellchars[x][y-1]!="") yes=-1;
-        	if ((y+hvlong)<15) if (cellchars[x][y+1]!="") yes=-1;
+        	if ((x>0)&&(hv>0)) if (cellchars[x-1][y]!="") yes=-1;
+        	if (((x+hvlong)<15)&&(hv>0)) if (cellchars[x+hvlong-1][y]!="") yes=-1;
+        	if ((y>0)&&(hv<0)) if (cellchars[x][y-1]!="") yes=-1;
+        	if (((y+hvlong)<15)&&(hv<0)) if (cellchars[x][y+hvlong-1]!="") yes=-1;
         	
         	if (yes==1) return index;
         	return yes;
@@ -238,7 +246,9 @@ public class StartGame {
         		if (hv>0)xx++; else yy++;
         	}
         	if (sh==1) return index;
-        	else return -1;
+        	if (sh==0) return -2;
+        	if (sh>1) return -1;
+        	return -1;
         }
         //calc cena word---------------------
             public int calc_cena_word (int x, int y, int v, String str)
@@ -260,7 +270,7 @@ public class StartGame {
             	}
             	return sum*flag_word_multiply;
             }
-          //ñ÷èòàåì öåíó áóêâû----------------------
+          //Г±Г·ГЁГІГ ГҐГ¬ Г¶ГҐГ­Гі ГЎГіГЄГўГ»----------------------
             public int calc_cena_char (String str)
             {
             	System.out.println( "char: " + str);
@@ -275,7 +285,7 @@ public class StartGame {
             }
 
         /**
-         * Êîìïîíåíò, ðèñóþùèé èãðîâîå ïîëå
+         * ГЉГ®Г¬ГЇГ®Г­ГҐГ­ГІ, Г°ГЁГ±ГіГѕГ№ГЁГ© ГЁГЈГ°Г®ГўГ®ГҐ ГЇГ®Г«ГҐ
          * 
          */
         static class Field extends JPanel {
@@ -291,7 +301,7 @@ public class StartGame {
 
                 g.setColor( Color.BLACK );
                 FontMetrics metrics = g.getFontMetrics();
-                // îòðèñîâêà óñòàíîâëåííûõ áóêâ
+                // Г®ГІГ°ГЁГ±Г®ГўГЄГ  ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г­Г»Гµ ГЎГіГЄГў
                 for ( int row = 0; row < SIZE; row += 1 ) {
                     for ( int col = 0; col < SIZE; col += 1 ) {
                         if ( letters[row][col] != null ) {
@@ -308,7 +318,7 @@ public class StartGame {
 //int [][] cellcolor=new int [15][15];
 
 
-                // îòðèñîâêà ëèíèé ñåòêè
+                // Г®ГІГ°ГЁГ±Г®ГўГЄГ  Г«ГЁГ­ГЁГ© Г±ГҐГІГЄГЁ
 g.setColor(Color.LIGHT_GRAY);
                 for ( int row = 1; row < SIZE; row += 1 ) {
                     g.drawLine( 0, row * CELL_SIZE, getWidth(), row * CELL_SIZE );
@@ -360,7 +370,7 @@ g.setColor(Color.LIGHT_GRAY);
 
 
         /**
-         * Êëàññ, îáðàáàòûâàþùèé ñîáûòèÿ ìûøè íà êîìïîíåíòàõ ñ áóêâàìè 
+         * ГЉГ«Г Г±Г±, Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГѕГ№ГЁГ© Г±Г®ГЎГ»ГІГЁГї Г¬Г»ГёГЁ Г­Г  ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ Гµ Г± ГЎГіГЄГўГ Г¬ГЁ 
          */
         private final class DragAdapter extends MouseAdapter {
             Letter letterToDrag;
@@ -370,18 +380,18 @@ g.setColor(Color.LIGHT_GRAY);
             @Override
             public void mousePressed( MouseEvent event ) {
                 Letter source = (Letter)event.getSource();
-                // ïðè íàæàòèè ñîçäàåì íîâûé êîìïîíåíò, êîòîðûé áóäåò ïåðåòàñêèâàòüñÿ
+                // ГЇГ°ГЁ Г­Г Г¦Г ГІГЁГЁ Г±Г®Г§Г¤Г ГҐГ¬ Г­Г®ГўГ»Г© ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІ, ГЄГ®ГІГ®Г°Г»Г© ГЎГіГ¤ГҐГІ ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ ГІГјГ±Гї
                 letterToDrag = new Letter( source.letter, true );
-                // ïåðåñ÷èòûâàåì åãî êîîðäèíàòû èç ïðîñòðàíñòâà ïàíåëè ñ áóêâàìè (source.getParent())
-                // â ïðîñòðàíñòâî îñíîâíîé ïàíåëè pane
+                // ГЇГҐГ°ГҐГ±Г·ГЁГІГ»ГўГ ГҐГ¬ ГҐГЈГ® ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» ГЁГ§ ГЇГ°Г®Г±ГІГ°Г Г­Г±ГІГўГ  ГЇГ Г­ГҐГ«ГЁ Г± ГЎГіГЄГўГ Г¬ГЁ (source.getParent())
+                // Гў ГЇГ°Г®Г±ГІГ°Г Г­Г±ГІГўГ® Г®Г±Г­Г®ГўГ­Г®Г© ГЇГ Г­ГҐГ«ГЁ pane
                 letterToDrag.setBounds( SwingUtilities.convertRectangle( source.getParent(), source.getBounds(), pane ) );
 
-                // çàïîìèíàåì, â êàêîé òî÷êå (â êîîðäèíàòàõ áóêâû) íàæàòà ìûøü
+                // Г§Г ГЇГ®Г¬ГЁГ­Г ГҐГ¬, Гў ГЄГ ГЄГ®Г© ГІГ®Г·ГЄГҐ (Гў ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ Гµ ГЎГіГЄГўГ») Г­Г Г¦Г ГІГ  Г¬Г»ГёГј
                 clickLocation = event.getPoint();
-                // çàïîìèíàåì ñòàðòîâûå êîîðäèíàòû ïåðåòàñêèâàåìîãî îáúåêòà
+                // Г§Г ГЇГ®Г¬ГЁГ­Г ГҐГ¬ Г±ГІГ Г°ГІГ®ГўГ»ГҐ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ ГҐГ¬Г®ГЈГ® Г®ГЎГєГҐГЄГІГ 
                 baseLocation = letterToDrag.getLocation();
 
-                // äîáàâëÿåì áóêâó äëÿ ïåðåòàñêèâàíèÿ íà îñíîâíóþ ïàíåëü íà ñëîé DRAG_LAYER (âûøå DEFAULT_LAYER)
+                // Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЎГіГЄГўГі Г¤Г«Гї ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ Г­ГЁГї Г­Г  Г®Г±Г­Г®ГўГ­ГіГѕ ГЇГ Г­ГҐГ«Гј Г­Г  Г±Г«Г®Г© DRAG_LAYER (ГўГ»ГёГҐ DEFAULT_LAYER)
                 pane.add( letterToDrag, JLayeredPane.DRAG_LAYER );
                 pane.setCursor( Cursor.getPredefinedCursor( Cursor.HAND_CURSOR ) ); 
             }
@@ -389,28 +399,28 @@ g.setColor(Color.LIGHT_GRAY);
             @Override
             public void mouseReleased( MouseEvent event ) {
                 Letter source = (Letter)event.getSource();
-                // ïîëó÷àåì êîîðäèíàòû â ïðîñòðàíñòâå áóêâû
+                // ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» Гў ГЇГ°Г®Г±ГІГ°Г Г­Г±ГІГўГҐ ГЎГіГЄГўГ»
                 Point dropPoint = event.getPoint();
                 System.out.println( "drop at: " + dropPoint );
 
-                // ïåðåâîäèì â ïðîñòðàíñòâî èãðîâîãî ïîëÿ
+                // ГЇГҐГ°ГҐГўГ®Г¤ГЁГ¬ Гў ГЇГ°Г®Г±ГІГ°Г Г­Г±ГІГўГ® ГЁГЈГ°Г®ГўГ®ГЈГ® ГЇГ®Г«Гї
                 Point pointInFieldCoords = SwingUtilities.convertPoint( source, dropPoint, field );
 
-                // âñå ïðÿ÷åì
+                // ГўГ±ГҐ ГЇГ°ГїГ·ГҐГ¬
                 pane.setCursor( Cursor.getPredefinedCursor( Cursor.DEFAULT_CURSOR ) ); 
                 letterToDrag.setVisible( false );
                 pane.remove( letterToDrag );
                 letterToDrag = null;
 
-                // ñîîáùàåì ïîëþ, ÷òî áóêâà ñáðîøåíà
+                // Г±Г®Г®ГЎГ№Г ГҐГ¬ ГЇГ®Г«Гѕ, Г·ГІГ® ГЎГіГЄГўГ  Г±ГЎГ°Г®ГёГҐГ­Г 
                 field.letterDropped( source, pointInFieldCoords );
             }
 
             @Override
             public void mouseDragged( MouseEvent event ) {
-                // ïðè ïåðåòàñêèâàíèè ìåíÿåì êîîðäèíàòû ïåðåòàñêèâàåìîãî îáúåêòà
-                // clickLocation.x - event.getX - ðàçíèöà ìåæäó ïîëîæåíèåì ìûøè 
-                //   ïðè íàæàòèè, è òåêóùåì
+                // ГЇГ°ГЁ ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ Г­ГЁГЁ Г¬ГҐГ­ГїГҐГ¬ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» ГЇГҐГ°ГҐГІГ Г±ГЄГЁГўГ ГҐГ¬Г®ГЈГ® Г®ГЎГєГҐГЄГІГ 
+                // clickLocation.x - event.getX - Г°Г Г§Г­ГЁГ¶Г  Г¬ГҐГ¦Г¤Гі ГЇГ®Г«Г®Г¦ГҐГ­ГЁГҐГ¬ Г¬Г»ГёГЁ 
+                //   ГЇГ°ГЁ Г­Г Г¦Г ГІГЁГЁ, ГЁ ГІГҐГЄГіГ№ГҐГ¬
 
                 letterToDrag.setLocation( 
                         baseLocation.x - clickLocation.x + event.getX(),
@@ -424,7 +434,7 @@ g.setColor(Color.LIGHT_GRAY);
 
             DragAdapter dragAdapter = new DragAdapter();
 
-            for ( String letter : new String[] { "*"," ","À", "Á", "Â", "Ã", "Ä", "Å", "Æ", "Ç","È","Ê","Ë","Ì","Í","Î","Ï","Ð","Ñ","Ò","Ó","Ô","Õ","×","Ö","Ø","Ù","Ü","Ú","Ý","Þ","ß" } ) {
+            for ( String letter : new String[] { "*"," ","ГЂ", "ГЃ", "Г‚", "Гѓ", "Г„", "Г…", "Г†", "Г‡","Г€","ГЉ","Г‹","ГЊ","ГЌ","ГЋ","ГЏ","Гђ","Г‘","Г’","Г“","Г”","Г•","Г—","Г–","Г�","Г™","Гњ","Гљ","Гќ","Гћ","Гџ" } ) {
                 Letter letterComponent = new Letter( letter );
 
                 letterComponent.addMouseMotionListener( dragAdapter );
@@ -437,7 +447,7 @@ g.setColor(Color.LIGHT_GRAY);
         }
 
         /**
-         * Êëàññ êîìïîíåíòà áóêâû
+         * ГЉГ«Г Г±Г± ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ  ГЎГіГЄГўГ»
          */
         static class Letter extends JComponent {
             static final int SIZE = 30;
