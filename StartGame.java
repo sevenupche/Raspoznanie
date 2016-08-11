@@ -54,10 +54,10 @@ public class StartGame {
    		,{0,4,0,0,0,1,0,0,0,1,0,0,0,4,0}
    		,{3,0,0,2,0,0,0,3,0,0,0,2,0,0,3}};
    	public static String[][] cellchars=
-   		{{"","u","","","","","","","","","","","","",""},//x=0
-   		 {"u","t","r","o","","","u","","","","","","","",""},//x=1
-   		 {"","r","","","","","","","","","","","","",""},
-   		 {"","o","","","","","","","","","","","","",""},
+   		{{"","","","","","","","","","","","","","",""},//x=0
+   		 {"u","t","r","o","","","","","","","","","","",""},//x=1
+   		 {"","","","","","","","","","","","","","",""},
+   		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
@@ -222,10 +222,10 @@ public class StartGame {
         	 if (hv<0) ymax=4;}
         	int flag=1;
         	//proverka borders
-        	if (xx==0) {xmin=1;}
+        	if ((xx==0)&&(hv>0)) {xmin=1;}
         	if (((xx+hvlong)==14)&&(hv>0)) xmax=4;
-        	if (yy==0) ymin=1;
-        	if (((yy+hvlong)==14)&&(hv<0)) ymax=4;
+        	if ((yy==0)&&(hv<0)) ymin=1;
+        	if (((yy+hvlong)==14)&&(hv<0)) xmax=4;
         	//end proverka borders
         	for (int x=xmin;x<xmax;x++)
         		for (int y=ymin;y<ymax;y++)
@@ -233,8 +233,14 @@ public class StartGame {
         			if (matrix3[y][x]==0)
         			{
         				//System.out.println( "x,y="+x+" "+y+"..."+flag);
-        				
-        				if (cellchars[xx+x-1][yy+y-1].length()>0) flag=-1;
+        				switch (hv)
+        				{
+        				case -1:	if (cellchars[xx+y-1][yy+x-1].length()>0) flag=-1;
+        					break;
+        				case 1:if (cellchars[xx+x-1][yy+y-1].length()>0) flag=-1;
+        					break;
+        				default: 
+        				}
         			}
        		  }
         	//System.out.println( "flag..."+flag);
