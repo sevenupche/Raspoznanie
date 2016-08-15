@@ -54,8 +54,9 @@ public class StartGame {
    		,{0,4,0,0,0,1,0,0,0,1,0,0,0,4,0}
    		,{3,0,0,2,0,0,0,3,0,0,0,2,0,0,3}};
    	public static String[][] cellchars=
-   		{{"","","","","","","","","","","","","","",""},//x=0
-   		 {"u","t","r","o","","","","","","","","","","",""},//x=1
+   		{{"","u","u","","","","","","","","","","","",""},//0
+   		 {"","","u","","","","","","","","","","","",""},//1
+   		 {"","","u","u","u","","","","","","","","","",""},//3
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
@@ -65,10 +66,9 @@ public class StartGame {
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
    		 {"","","","","","","","","","","","","","",""},
-   		 {"","","","","","","","","","","","","","",""},
-   		 {"","","","","","","","","","","","","","",""},//x=12
-   		 {"","","","","","","","","","","","","","",""},//x=13
-   		 {"","","","","","","","","","","","","","",""}};//x=14
+   		 {"","","","","","","","","","","","","","",""},//12
+   		 {"","","","","","","","","","","","","","",""},//13
+   		 {"","","","","","","","","","","","","","",""}};//14
    	public  String words7="wosnyui";//shablon
    	public static String words[]={"",//array dictionary
    			"first"//1
@@ -130,8 +130,9 @@ public class StartGame {
                 }
             });
             //System.out.println( "index find word: " + search_word(0,6,5,"r","swinte") );
-            int k=is_place(13,0,-1,3);//
-             System.out.println( "k="+k);
+           // int k=is_place(12,0,-1,3);//
+            // System.out.println( "k="+k);
+            
            search_vectors();
         }
         //-------------------------------------------------search vectors for new words------------------
@@ -161,6 +162,7 @@ public class StartGame {
         	int flag=-1;//Г­ГҐ ГЇГ®Г¤ГµГ®Г¤ГЁГІ
         	int index=is_line(xx,yy,hv,hvlong);
         	//System.out.println( "is_line="+index);
+        	if (index<0) return -1;
         	if ((hvlong==3)  && (hv>0))
         	 	{
         		flag=check_matrix3(x,y,hv,hvlong,index);
@@ -176,10 +178,12 @@ public class StartGame {
         //----check line is 1 char------------
         public int is_line(int xx,int yy,int hv, int hvlong)
         {
+        	if ((xx+hvlong)>=15) return -2;
+        	if ((yy+hvlong)>=15) return -2;
         	int sh=0,index=-1;
         	for (int i=0;i<hvlong;i++)
         	{
-        		if (cellchars[xx][yy]!="") {sh++; index=i;}
+        		if (cellchars[yy][xx]!="") {sh++; index=i;}
         		if (hv>0)xx++; else yy++;
         	}
         	if (sh==1) return index;
@@ -188,10 +192,11 @@ public class StartGame {
         	return -1;
         }
         //swap array
-        public String[][] swap_string_array(String [][] arr,int length_x,int length_y)
+        public static String[][] swap_string_array(String [][] arr,int length_x,int length_y)
         {
         	String tmp;
         	for (int x=0;x<length_x;x++)
+        	{
         		for (int y=0;y<length_y;y++)
         		{
         			if (x!=y)
@@ -201,46 +206,82 @@ public class StartGame {
         				arr[y][x]=tmp;
         				}
         		}
+        	}
         	return arr;
         }
         //--------check matrix---------------
         public int check_matrix3(int xx,int yy,int hv,int hvlong,int index)
         {
-        	 int [][] matrix3=new int [5][3];
+        	 int [][] matrix3=new int [3][5];
+        	 int [][] matrix3y=new int [5][3];
         	 final int [][] matrix3a=//bukva v seredine. long word =3
      		 	{{1,0,1,0,1},
      			 {0,1,1,1,0},
      			 {1,0,1,0,1}};
+        	 final int [][] matrix3ay=//bukva v seredine. long word =3
+      		 	{{1,0,1},
+      		 	 {0,1,0},
+      			 {1,1,1},
+      			 {0,1,0},
+      			 {1,0,1}};
         	 final int [][] matrix3b=//bukva v konce. long word =3
       		 	{{1,0,0,1,1},
-      			 {0,1,1,1,1},
+      			 {0,1,1,1,0},
       			 {1,0,0,1,1}};
+        	 final int [][] matrix3by=//bukva v konce. long word =3
+       		 	{{1,0,1},
+       		 	 {0,1,0},
+       			 {0,1,0},
+       			 {1,1,1},
+       			 {1,0,1}};
+        	 final int [][] matrix3c=//bukva v nacale. long word =3
+       		 	{{1,1,0,0,1},
+       			 {0,1,1,1,0},
+       			 {1,1,0,0,1}};
+        	 final int [][] matrix3cy=//bukva v nacale. long word =3
+        		 	{{1,0,1},
+        		 	 {1,1,1},
+        			 {0,1,0},
+        			 {0,1,0},
+        			 {1,0,1}};
         	 int xmin=0,xmax=5,ymin=0,ymax=3;
+        	 if (hv>0)
+        	 {
          	 if (index==1) matrix3=matrix3a;
-        	 if (index==2) {matrix3=matrix3b; 
-        	 if (hv>0) xmax=4; 
-        	 if (hv<0) ymax=4;}
+        	 if (index==2) matrix3=matrix3b; 
+        	 if (index==0) matrix3=matrix3c;
+        	 }
+        	 //if (hv>0) xmax=4; 
+        	 if (hv<0) 
+        	 {
+        		 if (index==1) matrix3y=matrix3ay;
+        		 if (index==2) matrix3y=matrix3by;
+        		 if (index==0) matrix3y=matrix3cy;
+        	 }
         	int flag=1;
         	//proverka borders
-        	if ((xx==0)&&(hv>0)) {xmin=1;}
-        	if (((xx+hvlong)==14)&&(hv>0)) xmax=4;
-        	if ((yy==0)&&(hv<0)) ymin=1;
-        	if (((yy+hvlong)==14)&&(hv<0)) xmax=4;
+        	if (xx==0) {xmin=1;}
+        	if (((xx+hvlong)>=15)&&(hv>0)) xmax=4;
+        	if (yy==0) ymin=1;
+        	if (((yy+hvlong)>=15)&&(hv<0)) xmax=4;
         	//end proverka borders
         	for (int x=xmin;x<xmax;x++)
         		for (int y=ymin;y<ymax;y++)
        		  {
-        			if (matrix3[y][x]==0)
+        			switch (hv)
         			{
+        			case 1:
+        				if (matrix3[y][x]==0)
         				//System.out.println( "x,y="+x+" "+y+"..."+flag);
-        				switch (hv)
-        				{
-        				case -1:	if (cellchars[xx+y-1][yy+x-1].length()>0) flag=-1;
-        					break;
-        				case 1:if (cellchars[xx+x-1][yy+y-1].length()>0) flag=-1;
-        					break;
-        				default: 
-        				}
+        					//if (cellchars[xx+y-1][yy+x-1].length()>0) flag=-1;
+        				if (cellchars[yy+y-1][xx+x-1].length()>0) flag=-1;
+        			break;
+        			case -1:
+        				if (matrix3y[x][y]==0)
+        				if (((yy+x-1)>=0)&&((xx+y-1)>=0))
+							if (cellchars[yy+x-1][xx+y-1].length()>0) flag=-1;
+        				break;
+        			
         			}
        		  }
         	//System.out.println( "flag..."+flag);
@@ -331,6 +372,7 @@ public class StartGame {
             public void paintComponent( Graphics g ) {
                 g.setColor( Color.WHITE );
                 g.fillRect( 0, 0, getWidth(), getHeight() );
+                //cellchars=GamePanel.swap_string_array(cellchars,15,15);
                 letters = cellchars;
                 g.setColor( Color.BLACK );
                 FontMetrics metrics = g.getFontMetrics();
@@ -539,4 +581,3 @@ g.setColor(Color.LIGHT_GRAY);
     }
 
 }
-
